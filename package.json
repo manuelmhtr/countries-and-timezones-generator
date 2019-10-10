@@ -1,0 +1,25 @@
+{
+  "private": true,
+  "name": "countries-and-timezones-generator",
+  "version": "1.0.0",
+  "description": "Generates raw data necessary for the \"countries-and-timezones\" package.",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "node lib/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manuelmhtr/countries-and-timezones-generator.git"
+  },
+  "author": "Manuel de la Torre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manuelmhtr/countries-and-timezones-generator/issues"
+  },
+  "homepage": "https://github.com/manuelmhtr/countries-and-timezones-generator#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cheerio": "^1.0.0-rc.3"
+  }
+}

@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const expectedCountries = require('./expected-countries');
 const parseData = require('../../../../lib/get-countries-data/parse-data');
 
 describe('.getCountriesData | .parseData', () => {
+  const { expectedCountries } = TestUtils.data;
   let results = {};
 
   before(() => {

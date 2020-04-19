@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const expectedTimezones = require('./expected-timezones');
-const parseData = require('../../../../lib/get-timezones-data/parse-data');
+const parseData = require('../../../../lib/get-wikipedia-timezones-data/parse-data');
 
 describe('.getTimezonesData | .parseData', () => {
   let results = {};

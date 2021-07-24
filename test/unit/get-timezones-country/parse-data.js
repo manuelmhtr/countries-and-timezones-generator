@@ -19,7 +19,7 @@ describe('.getTimezonesCountry | .parseData', () => {
 
   Object.keys(expectedTimezonesCountry).forEach(id => {
     it(`parses "${id}" correctly`, () => {
-      expect(results[id]).to.be.eql(expectedTimezonesCountry[id]);
+      expect(results[id]).to.be.deep.eql(expectedTimezonesCountry[id]);
     });
   });
 });

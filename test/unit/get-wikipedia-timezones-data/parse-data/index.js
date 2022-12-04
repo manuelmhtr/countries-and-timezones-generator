@@ -14,7 +14,7 @@ describe('.getTimezonesData | .parseData', () => {
 
   it('should return an object', () => {
     expect(results).to.be.an('object');
-    expect(Object.keys(results).length).to.be.equal(505);
+    expect(Object.keys(results).length).to.be.equal(Object.keys(expectedTimezones).length);
   });
 
   Object.keys(expectedTimezones).forEach(id => {

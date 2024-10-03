@@ -40,7 +40,7 @@
     "chai": "^4.2.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
-    "markdown-cli": "^1.6.0",
+    "markdownlint-cli": "^0.42.0",
     "mocha": "^7.1.1",
     "xo": "^0.59.3"
   }

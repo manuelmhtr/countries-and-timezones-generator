@@ -28,8 +28,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "lodash": "^4.17.21",
-    "moment-timezone": "^0.5.33"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "chai": "^4.2.0",

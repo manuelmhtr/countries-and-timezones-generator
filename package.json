@@ -5,8 +5,14 @@
   "description": "Generates raw data necessary for the \"countries-and-timezones\" package.",
   "main": "lib/index.js",
   "scripts": {
+    "lint:html": "prettier --write \"**/*.html\"",
+    "lint:js": "xo --fix",
+    "lint:json": "prettier --write \"**/*.json\"",
+    "lint:md": "markdownlint \"**/*.md\" --fix --dot --ignore-path .gitignore && prettier --write \"**/*.md\"",
+    "lint": "yarn run lint:js && yarn run lint:html && yarn run lint:json && yarn run lint:md",
     "start": "node lib/index.js",
-    "test": "mocha -r test/index.js test/unit"
+    "test": "mocha -r test/index.js test/unit",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -32,6 +38,10 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.1.1"
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
+    "markdownlint-cli": "^0.42.0",
+    "mocha": "^7.1.1",
+    "xo": "^0.59.3"
   }
 }

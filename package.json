@@ -41,7 +41,7 @@
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "markdownlint-cli": "^0.42.0",
-    "mocha": "^7.1.1",
+    "mocha": "^10.7.3",
     "xo": "^0.59.3"
   }
 }

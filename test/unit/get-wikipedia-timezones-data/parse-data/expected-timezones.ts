@@ -1,4 +1,4 @@
-import type { TimezonesData } from "../../../../lib/types";
+import type {TimezonesData} from '../../../../lib/types';
 
 const exported: TimezonesData = {
   'Africa/Abidjan': {

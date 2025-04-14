@@ -1,52 +1,56 @@
-import type { Country, CountryCode, Timezone, TimezoneName } from "countries-and-timezones";
+import type {
+  Country,
+  CountryCode,
+  Timezone,
+  TimezoneName,
+} from 'countries-and-timezones';
 
 export type CountriesAndTimezonesData = {
   countries: CountriesData;
   timezones: TimezonesData;
-}
+};
 
-export type CountriesData = Record<Country["id"], Country["name"]>;
-export type TimezonesData = Record<Timezone["name"], CompressedTimezone>;
+export type CountriesData = Record<Country['id'], Country['name']>;
+export type TimezonesData = Record<Timezone['name'], CompressedTimezone>;
 
 export type CompressedTimezone = CanonicalTimezone | AliasTimezone;
 
 type BaseTimezone = {
   /**
-   * countries (country code)
+   * Countries (country code)
    */
-  c?: string[];
+  c?: CountryCode[];
 
   /**
-   * deprecated
+   * Deprecated
    */
-  r?: number
-}
+  r?: number;
+};
 
 type AliasTimezone = BaseTimezone & {
   /**
-   * alias
+   * Alias
    */
   a: string;
-}
+};
 
 type CanonicalTimezone = BaseTimezone & {
   /**
-   * utc offset
+   * Utc offset
    */
   u: number;
 
   /**
-   * dst offset
+   * Dst offset
    */
   d?: number;
-}
+};
 
-type ExcludedCountryCode = string;
+type ExternalCountryCode = string;
 
 export type Fixes = {
   ADD_COUNTRIES: Partial<Record<TimezoneName, CountryCode>>;
-  REMOVE_COUNTRIES: ExcludedCountryCode[];
+  REMOVE_COUNTRIES: ExternalCountryCode[];
   DEPRECATED_TIMEZONES: TimezoneName[];
   OVERWRITE_TIMEZONE: Partial<Record<TimezoneName, CompressedTimezone>>;
 };
-

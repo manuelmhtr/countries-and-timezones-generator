@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {describe, beforeAll, it, expect} from 'vitest';
+import {type Country} from 'countries-and-timezones';
 import parseData from '../../../../lib/get-countries-data/parse-data';
-import { describe, beforeAll, it, expect} from "vitest";
-import { TestGlobal } from "../../../types";
-import { CountriesData } from "../../../../lib/types";
-import { Country } from "countries-and-timezones";
+import {type TestGlobal} from '../../../types';
+import {type CountriesData} from '../../../../lib/types';
 
 describe('.getCountriesData | .parseData', () => {
-  let { expectedCountries }= (global as TestGlobal).TestUtils.data;
-  let results = {} as CountriesData;
+  const {expectedCountries} = (globalThis as TestGlobal).TestUtils.data;
+  let results: Partial<CountriesData> = {};
 
   beforeAll(() => {
     const dataPath = path.join(import.meta.dirname, './data.html');
@@ -21,7 +21,7 @@ describe('.getCountriesData | .parseData', () => {
     expect(Object.keys(results).length).to.be.equal(249);
   });
 
-  for (const id of (Object.keys(expectedCountries) as Country["id"][])) {
+  for (const id of Object.keys(expectedCountries) as Array<Country['id']>) {
     it(`should parse "${id}" correctly`, () => {
       expect(results[id]).to.be.eql(expectedCountries[id]);
     });

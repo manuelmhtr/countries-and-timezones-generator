@@ -1,4 +1,4 @@
-import type { CountriesData } from "../../../lib/types";
+import type {CountriesData} from '../../../lib/types';
 
 const exported: CountriesData = {
   AD: 'Andorra',

@@ -1,8 +1,6 @@
-import {expect} from 'chai';
-import TestUtils from '../utils';
-import type { GlobalThis } from "type-fest";
+import type {GlobalThis} from 'type-fest';
+import type TestUtils from '../utils';
 
 export type TestGlobal = GlobalThis & {
-  expect: typeof expect;
   TestUtils: typeof TestUtils;
-}
+};

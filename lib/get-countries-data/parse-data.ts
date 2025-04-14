@@ -1,11 +1,11 @@
-import { type CheerioAPI, load } from 'cheerio';
-import type { CountriesData } from "../types";
-import { Country, Timezone } from "countries-and-timezones";
+import {type CheerioAPI, load} from 'cheerio';
+import {type Country, type Timezone} from 'countries-and-timezones';
+import type {CountriesData, ExternalCountryCode} from '../types';
 
 const TABLE_SELECTOR = 'table.wikitable.sortable';
 const ROW_SELECTOR = 'tr';
 const VALUES_SELECTOR = 'td';
-const OVERWRITE_NAMES = {
+const OVERWRITE_NAMES: Record<ExternalCountryCode, Timezone['name']> = {
   BN: 'Brunei',
   BQ: 'Caribbean Netherlands',
   CI: 'Ivory Coast',
@@ -21,14 +21,20 @@ const OVERWRITE_NAMES = {
   VG: 'Virgin Islands (UK)',
   VI: 'Virgin Islands (US)',
   VN: 'Vietnam',
-} as Record<Country["id"], Timezone["name"]>;
+};
 
-const getId = ($: CheerioAPI, tds: ReturnType<ReturnType<CheerioAPI>["find"]>): Country["id"] => $(tds.get(0)).text().trim() as Country["id"];
-const getName = ($: CheerioAPI, tds:ReturnType<ReturnType<CheerioAPI>["find"]>): Country["name"] => $(tds.get(1)).find('a').text();
+const getId = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+): Country['id'] => $(tds.get(0)).text().trim() as Country['id'];
+const getName = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+): Country['name'] => $(tds.get(1)).find('a').text();
 
 function parseData(html: string): CountriesData {
   const $ = load(html);
-  const countries: Partial<Record<Country["id"], Timezone["name"]>> = {};
+  const countries: Partial<Record<Country['id'], Timezone['name']>> = {};
 
   $(TABLE_SELECTOR)
     .first()
@@ -46,13 +52,13 @@ function parseData(html: string): CountriesData {
       countries[id] = name;
     });
 
-  const sortedIds = Object.keys(countries).sort() as Country["id"][];
-  return sortedIds.reduce((result, id) => {
-    return Object.assign(result, {[id]: countries[id]});
-  }, {}) as CountriesData;
+  const sortedIds = Object.keys(countries).sort() as Array<Country['id']>;
+  return Object.fromEntries(
+    sortedIds.map((id) => [id, countries[id]]),
+  ) as CountriesData;
 }
 
-function parseName(id: Country["id"], input: string): Country["name"] {
+function parseName(id: Country['id'], input: string): Country['name'] {
   const name = OVERWRITE_NAMES[id];
   return name || removeNameNotes(input);
 }

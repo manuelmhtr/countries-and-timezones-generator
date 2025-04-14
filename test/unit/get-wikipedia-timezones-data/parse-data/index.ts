@@ -1,12 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {describe, beforeAll, it, expect} from 'vitest';
 import parseData from '../../../../lib/get-wikipedia-timezones-data/parse-data';
+import {type TimezonesData} from '../../../../lib/types';
 import expectedTimezones from './expected-timezones';
-import { describe, beforeAll, it, expect} from "vitest";
-import { TimezonesData } from "../../../../lib/types";
 
 describe('.getTimezonesData | .parseData', () => {
-  let results = {} as TimezonesData;
+  let results: Partial<TimezonesData> = {};
 
   beforeAll(() => {
     const dataPath = path.join(import.meta.dirname, './data.html');

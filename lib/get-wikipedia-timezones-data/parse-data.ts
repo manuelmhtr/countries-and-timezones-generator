@@ -1,7 +1,7 @@
-import { type CheerioAPI, load } from 'cheerio';
+import {type CheerioAPI, load} from 'cheerio';
+import type {Timezone} from 'countries-and-timezones';
+import type {CompressedTimezone, TimezonesData} from '../types';
 import removeDuplicatedCountries from './remove-duplicated-countries';
-import type { CompressedTimezone, TimezonesData } from "../types";
-import type { Timezone } from "countries-and-timezones";
 
 const CANONICAL_TYPE = 'Canonical';
 const ALIAS_TYPE = 'Link';
@@ -10,25 +10,43 @@ const ROW_SELECTOR = 'tr';
 const VALUES_SELECTOR = 'td';
 const DEPRECATED_COLOR = '#fdf5f5';
 
-const getId = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"]>) => $(tds.get(1)).find('a').text().trim();
-const getCountries = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"]>) => $(tds.get(0)).text().trim();
-const getType = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"]>) => $(tds.get(3)).text().trim();
-const getUtcOffset = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"]>) =>
-  offsetStringToMin($(tds.get(4)).find('a').text().trim());
-const getDstOffset = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"]>) =>
-  offsetStringToMin($(tds.get(5)).find('a').text().trim());
-const getAliasOf = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"]>) =>
+const getId = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+) => $(tds.get(1)).find('a').text().trim();
+const getCountries = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+) => $(tds.get(0)).text().trim();
+const getType = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+) => $(tds.get(3)).text().trim();
+const getUtcOffset = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+) => offsetStringToMin($(tds.get(4)).find('a').text().trim());
+const getDstOffset = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+) => offsetStringToMin($(tds.get(5)).find('a').text().trim());
+const getAliasOf = (
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+) =>
   $(tds.get(tds.length - 1))
     .find('a')
     .first()
     .text()
     .trim();
-const getIsDeprecated = ($: CheerioAPI,  row:ReturnType<ReturnType<CheerioAPI>["find"]>) =>
-  $(row).attr('style')!.includes(DEPRECATED_COLOR);
+const getIsDeprecated = (
+  $: CheerioAPI,
+  row: ReturnType<ReturnType<CheerioAPI>['find']>,
+) => $(row).attr('style')!.includes(DEPRECATED_COLOR);
 
 function parseData(html: string): TimezonesData {
   const $ = load(html);
-  const timezones: Partial<Record<Timezone["name"], CompressedTimezone>> = {};
+  const timezones: Partial<Record<Timezone['name'], CompressedTimezone>> = {};
 
   $(TABLE_SELECTOR)
     .first()
@@ -36,27 +54,44 @@ function parseData(html: string): TimezonesData {
     .find(ROW_SELECTOR)
     .each((index, row) => {
       const tds = $(row).find(VALUES_SELECTOR);
-      if (tds.length === 0) return;
+      if (tds.length === 0) {
+        return;
+      }
 
       const id = getId($, tds);
       const timezone = getTimezone($, tds);
-      const deprecated = getIsDeprecated($, row as any as ReturnType<ReturnType<CheerioAPI>["find"]>);
+      const deprecated = getIsDeprecated(
+        $,
+        row as any as ReturnType<ReturnType<CheerioAPI>['find']>,
+      );
 
-      if (deprecated) timezone!.r = 1;
-      if (timezone) timezones[id] = timezone;
+      if (deprecated) {
+        timezone!.r = 1;
+      }
+
+      if (timezone) {
+        timezones[id] = timezone;
+      }
     });
 
-  return sortObject(removeDuplicatedCountries(timezones as Record<Timezone["name"], CompressedTimezone>));
+  return sortObject(
+    removeDuplicatedCountries(
+      timezones as Record<Timezone['name'], CompressedTimezone>,
+    ),
+  );
 }
 
-function sortObject(timezones: Record<Timezone["name"], CompressedTimezone>): Record<Timezone["name"], CompressedTimezone> {
+function sortObject(
+  timezones: Record<Timezone['name'], CompressedTimezone>,
+): Record<Timezone['name'], CompressedTimezone> {
   const sortedIds = Object.keys(timezones).sort();
-  return sortedIds.reduce((result, id) => {
-    return Object.assign(result, { [id]: timezones[id] });
-  }, {});
+  return Object.fromEntries(sortedIds.map((id) => [id, timezones[id]]));
 }
 
-function getTimezone($: CheerioAPI, tds:ReturnType<ReturnType<CheerioAPI>["find"]>): CompressedTimezone | undefined {
+function getTimezone(
+  $: CheerioAPI,
+  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+): CompressedTimezone | undefined {
   const type = parseType(getType($, tds));
   const countries = parseCountries(getCountries($, tds));
 
@@ -66,16 +101,25 @@ function getTimezone($: CheerioAPI, tds:ReturnType<ReturnType<CheerioAPI>["find"
     const tz: Partial<CompressedTimezone> = {
       u: utcOffset,
     };
-    if (utcOffset !== dstOffset) tz.d = dstOffset;
-    if (countries.length > 0) tz.c = countries;
-    return tz as CompressedTimezone;
+    if (utcOffset !== dstOffset) {
+      tz.d = dstOffset;
+    }
+
+    if (countries.length > 0) {
+      tz.c = countries;
+    }
+
+    return tz;
   }
 
   if (type === ALIAS_TYPE) {
     const aliasOf = getAliasOf($, tds);
-    const tz: Partial<CompressedTimezone> = { a: aliasOf };
-    if (countries.length > 0) tz.c = countries;
-    return tz as CompressedTimezone;
+    const tz: Partial<CompressedTimezone> = {a: aliasOf};
+    if (countries.length > 0) {
+      tz.c = countries;
+    }
+
+    return tz;
   }
 }
 
@@ -94,9 +138,15 @@ function offsetStringToMin(offsetString: string): number {
   return hours * 60 + min * sign;
 }
 
-function parseType(input: string): null | string {
-  if (input.includes(CANONICAL_TYPE)) return CANONICAL_TYPE;
-  if (input.includes(ALIAS_TYPE)) return ALIAS_TYPE;
+function parseType(input: string): undefined | string {
+  if (input.includes(CANONICAL_TYPE)) {
+    return CANONICAL_TYPE;
+  }
+
+  if (input.includes(ALIAS_TYPE)) {
+    return ALIAS_TYPE;
+  }
+
   return null;
 }
 

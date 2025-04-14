@@ -1,4 +1,4 @@
 import TestUtils from './utils';
-import { TestGlobal } from "./types";
+import {type TestGlobal} from './types';
 
-(global as TestGlobal).TestUtils = TestUtils;
+(globalThis as TestGlobal).TestUtils = TestUtils;

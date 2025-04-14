@@ -1,4 +1,4 @@
-import { Fixes } from "../types";
+import {type Fixes} from '../types';
 
 const exported: Fixes = {
   ADD_COUNTRIES: {

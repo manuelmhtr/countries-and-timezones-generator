@@ -1,8 +1,8 @@
-import fixData from './fix-data/index.js';
-import validateData from './validate-data/index.js';
-import getCountriesData from './get-countries-data/index.js';
-import getWikipediaTimezonesData from './get-wikipedia-timezones-data/index.js';
-import {storeData} from './utils/index.js';
+import fixData from './fix-data';
+import validateData from './validate-data';
+import getCountriesData from './get-countries-data';
+import getWikipediaTimezonesData from './get-wikipedia-timezones-data';
+import {storeData} from './utils';
 
 const FILE_PATH = '/tmp/countries-and-timezones.json';
 

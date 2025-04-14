@@ -1,6 +1,6 @@
 import {difference, isInteger} from 'lodash-es';
 import type { Country, Timezone } from "countries-and-timezones";
-import { CompressedTimezone, CountriesAndTimezones } from "../types/index.js";
+import { CompressedTimezone, CountriesAndTimezones } from "../types";
 import { SetRequired } from "type-fest";
 
 const validateData = (data: CountriesAndTimezones): void => {

@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import parseData from '../../../../lib/get-countries-data/parse-data.js';
+import parseData from '../../../../lib/get-countries-data/parse-data';
 import { describe, beforeAll, it, expect} from "vitest";
-import { TestGlobal } from "../../../types/index.js";
-import { CountriesAndTimezones } from "../../../../lib/types/index.js";
+import { TestGlobal } from "../../../types";
+import { CountriesAndTimezones } from "../../../../lib/types";
 import { Country } from "countries-and-timezones";
 
 describe('.getCountriesData | .parseData', () => {

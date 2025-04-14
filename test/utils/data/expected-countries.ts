@@ -1,4 +1,4 @@
-import { CountriesAndTimezones } from "../../../lib/types/index.js";
+import { CountriesAndTimezones } from "../../../lib/types";
 
 const exported: CountriesAndTimezones["countries"] = {
   AD: 'Andorra',

@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import parseData from '../../../../lib/get-wikipedia-timezones-data/parse-data.js';
-import expectedTimezones from './expected-timezones.js';
+import parseData from '../../../../lib/get-wikipedia-timezones-data/parse-data';
+import expectedTimezones from './expected-timezones';
 import { describe, beforeAll, it, expect} from "vitest";
-import { CountriesAndTimezones } from "../../../../lib/types/index.js";
+import { CountriesAndTimezones } from "../../../../lib/types";
 
 describe('.getTimezonesData | .parseData', () => {
   let results = {}as CountriesAndTimezones["timezones"];

@@ -1,6 +1,6 @@
 import { type CheerioAPI, load } from 'cheerio';
-import removeDuplicatedCountries from './remove-duplicated-countries.js';
-import type { CompressedTimezone, CountriesAndTimezones } from "../types/index.js";
+import removeDuplicatedCountries from './remove-duplicated-countries';
+import type { CompressedTimezone, CountriesAndTimezones } from "../types";
 import type { Timezone } from "countries-and-timezones";
 
 const CANONICAL_TYPE = 'Canonical';

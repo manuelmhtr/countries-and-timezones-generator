@@ -4,8 +4,8 @@ import {
   REMOVE_COUNTRIES,
   DEPRECATED_TIMEZONES,
   OVERWRITE_TIMEZONE,
-} from './fixes.js';
-import type { CountriesAndTimezones } from "../types/index.js";
+} from './fixes';
+import type { CountriesAndTimezones } from "../types";
 import type { Country, TimezoneName } from "countries-and-timezones";
 
 const fixData = (data: CountriesAndTimezones): CountriesAndTimezones => {

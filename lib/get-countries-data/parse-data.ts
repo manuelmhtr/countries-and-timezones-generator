@@ -1,5 +1,5 @@
 import { type CheerioAPI, load } from 'cheerio';
-import type { CountriesAndTimezones } from "../types/index.js";
+import type { CountriesAndTimezones } from "../types";
 import { Country, Timezone } from "countries-and-timezones";
 
 const TABLE_SELECTOR = 'table.wikitable.sortable';

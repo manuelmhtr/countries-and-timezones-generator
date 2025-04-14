@@ -1,4 +1,4 @@
-import data from './data/index.js';
+import data from './data';
 
 const exported = {data};
 

@@ -1,4 +1,4 @@
-import TestUtils from './utils/index.js';
-import { TestGlobal } from "./types/index.js";
+import TestUtils from './utils';
+import { TestGlobal } from "./types";
 
 (global as TestGlobal).TestUtils = TestUtils;

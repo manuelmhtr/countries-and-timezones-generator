@@ -1,6 +1,6 @@
-import getData from './get-data.js';
-import parseData from './parse-data.js';
-import type { CountriesAndTimezones } from "../types/index.js";
+import getData from './get-data';
+import parseData from './parse-data';
+import type { CountriesAndTimezones } from "../types";
 
 async function getCountriesData(): Promise<CountriesAndTimezones["countries"]> {
   const data = await getData();

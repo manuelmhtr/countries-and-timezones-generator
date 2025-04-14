@@ -1,5 +1,5 @@
 import type { Country, Timezone } from "countries-and-timezones";
-import type { CompressedTimezone } from "../types/index.js";
+import type { CompressedTimezone } from "../types";
 
 const sameCountries = (c1: Country["name"][], c2: Country["name"][]) => c1.join(',') === c2.join(',');
 

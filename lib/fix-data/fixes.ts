@@ -1,4 +1,4 @@
-import { Fixes } from "../types/index.js";
+import { Fixes } from "../types";
 
 const exported: Fixes = {
   ADD_COUNTRIES: {

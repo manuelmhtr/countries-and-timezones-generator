@@ -1,12 +1,12 @@
-const fixData = require('./fix-data');
-const validateData = require('./validate-data');
-const getCountriesData = require('./get-countries-data');
-const getWikipediaTimezonesData = require('./get-wikipedia-timezones-data');
-const {storeData} = require('./utils');
+import fixData from './fix-data/index.js';
+import validateData from './validate-data/index.js';
+import getCountriesData from './get-countries-data/index.js';
+import getWikipediaTimezonesData from './get-wikipedia-timezones-data/index.js';
+import {storeData} from './utils/index.js';
 
 const FILE_PATH = '/tmp/countries-and-timezones.json';
 
-async function generateFile() {
+async function generateFile(): Promise<void> {
   const countries = await getCountriesData();
   const timezones = await getWikipediaTimezonesData();
   const data = fixData({countries, timezones});

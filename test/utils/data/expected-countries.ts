@@ -1,4 +1,6 @@
-module.exports = {
+import { CountriesAndTimezones } from "../../../lib/types/index.js";
+
+const exported: CountriesAndTimezones["countries"] = {
   AD: 'Andorra',
   AE: 'United Arab Emirates',
   AF: 'Afghanistan',
@@ -32,6 +34,7 @@ module.exports = {
   BR: 'Brazil',
   BS: 'Bahamas',
   BT: 'Bhutan',
+  // @ts-expect-error -- mismatched type, maybe outdated?
   BV: 'Bouvet Island',
   BW: 'Botswana',
   BY: 'Belarus',
@@ -249,3 +252,5 @@ module.exports = {
   ZM: 'Zambia',
   ZW: 'Zimbabwe',
 };
+
+export default exported;

@@ -6,10 +6,10 @@
   "main": "lib/index.ts",
   "scripts": {
     "lint:html": "prettier --write \"**/*.html\"",
-    "lint:js": "xo --fix",
+    "lint:ts": "xo --fix",
     "lint:json": "prettier --write \"**/*.json\"",
     "lint:md": "markdownlint \"**/*.md\" --fix --dot --ignore-path .gitignore && prettier --write \"**/*.md\"",
-    "lint": "yarn run lint:js && yarn run lint:html && yarn run lint:json && yarn run lint:md",
+    "lint": "yarn run lint:ts && yarn run lint:html && yarn run lint:json && yarn run lint:md",
     "start": "tsx lib/index.ts",
     "test": "vitest",
     "postinstall": "husky"
@@ -42,8 +42,8 @@
     "@types/node": "^22.14.1",
     "@typescript-eslint/parser": "^8.29.1",
     "countries-and-timezones": "^3.7.2",
-    "husky": "^9.1.6",
-    "lint-staged": "^15.2.10",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.1",
     "markdownlint-cli": "^0.42.0",
     "mocha": "11.1.0",
     "tsx": "^4.19.3",
@@ -54,7 +54,7 @@
     "xo": "^0.59.3"
   },
   "engines": {
-    "node": ">=20.0.0 <=22.0.0",
+    "node": ">= 22.6.0 && <=23.0.0",
     "yarn": "^4.6.0"
   }
 }

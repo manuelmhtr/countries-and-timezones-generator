@@ -1,5 +1,5 @@
 import {uniq, omit} from 'lodash-es';
-import type {TimezoneName} from 'countries-and-timezones';
+import type {CountryCode, TimezoneName} from 'countries-and-timezones';
 import type {
   CountriesAndTimezonesData,
   CountriesData,
@@ -40,7 +40,7 @@ const addCountries = (
   for (const key of Object.keys(ADD_COUNTRIES) as TimezoneName[]) {
     const tz = data.timezones[key];
     const newCountries = ADD_COUNTRIES[key]!;
-    tz.c = uniq([...tz.c!, ...newCountries]);
+    tz.c = uniq([...tz.c!, ...newCountries]) as CountryCode[];
     data.timezones[key] = tz;
   }
 

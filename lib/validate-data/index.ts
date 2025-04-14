@@ -28,16 +28,15 @@ const checkAllCountriesHaveTimezones = ({
   countries,
   timezones,
 }: CountriesAndTimezonesData): void => {
-  const withTz = Object.values(timezones).reduce<Record<CountryCode, boolean>>(
-    (previous, tz) => {
-      for (const c of tz.c ?? []) {
-        previous[c] = true;
-      }
+  const withTz = Object.values(timezones).reduce<
+    Partial<Record<CountryCode, boolean>>
+  >((previous, tz) => {
+    for (const c of tz.c ?? []) {
+      previous[c] = true;
+    }
 
-      return previous;
-    },
-    {},
-  );
+    return previous;
+  }, {});
 
   const diff = difference(Object.keys(countries), Object.keys(withTz));
   if (diff.length > 0) {

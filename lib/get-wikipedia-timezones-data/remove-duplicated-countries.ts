@@ -1,10 +1,8 @@
-import type {Country, Timezone} from 'countries-and-timezones';
+import type {Country, CountryCode, Timezone} from 'countries-and-timezones';
 import type {CompressedTimezone} from '../types';
 
-const sameCountries = (
-  c1: Array<Country['name']>,
-  c2: Array<Country['name']>,
-) => c1.join(',') === c2.join(',');
+const sameCountries = (c1: CountryCode[], c2: CountryCode[]) =>
+  c1.join(',') === c2.join(',');
 
 // Removes "c" property from aliases where canonical has the same info.
 const removeDuplicatedCountries = (
@@ -13,9 +11,9 @@ const removeDuplicatedCountries = (
   Object.keys(timezones).reduce<Record<Timezone['name'], CompressedTimezone>>(
     (previous, key) => {
       const tz = timezones[key];
-      if (tz.a && tz.c) {
+      if ('a' in tz && tz.a && tz.c) {
         const canonical = timezones[tz.a];
-        if (sameCountries(tz.c, canonical.c)) {
+        if (sameCountries(tz.c, canonical.c!)) {
           delete tz.c;
         }
       }

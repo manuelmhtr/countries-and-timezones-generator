@@ -1,5 +1,5 @@
 import {type CheerioAPI, load} from 'cheerio';
-import type {Timezone} from 'countries-and-timezones';
+import type {Country, CountryCode, Timezone} from 'countries-and-timezones';
 import type {CompressedTimezone, TimezonesData} from '../types';
 import removeDuplicatedCountries from './remove-duplicated-countries';
 
@@ -39,10 +39,8 @@ const getAliasOf = (
     .first()
     .text()
     .trim();
-const getIsDeprecated = (
-  $: CheerioAPI,
-  row: ReturnType<ReturnType<CheerioAPI>['find']>,
-) => $(row).attr('style')!.includes(DEPRECATED_COLOR);
+const getIsDeprecated = ($: CheerioAPI, row: Parameters<CheerioAPI>[0]) =>
+  $(row).attr('style')!.includes(DEPRECATED_COLOR);
 
 function parseData(html: string): TimezonesData {
   const $ = load(html);
@@ -60,10 +58,7 @@ function parseData(html: string): TimezonesData {
 
       const id = getId($, tds);
       const timezone = getTimezone($, tds);
-      const deprecated = getIsDeprecated(
-        $,
-        row as any as ReturnType<ReturnType<CheerioAPI>['find']>,
-      );
+      const deprecated = getIsDeprecated($, row);
 
       if (deprecated) {
         timezone!.r = 1;
@@ -109,7 +104,7 @@ function getTimezone(
       tz.c = countries;
     }
 
-    return tz;
+    return tz as CompressedTimezone;
   }
 
   if (type === ALIAS_TYPE) {
@@ -119,7 +114,7 @@ function getTimezone(
       tz.c = countries;
     }
 
-    return tz;
+    return tz as CompressedTimezone;
   }
 }
 
@@ -147,14 +142,14 @@ function parseType(input: string): undefined | string {
     return ALIAS_TYPE;
   }
 
-  return null;
+  return undefined;
 }
 
-function parseCountries(input: string): string[] {
+function parseCountries(input: string): CountryCode[] {
   return (input || '')
     .replaceAll(/[^A-Z,]/g, '')
     .split(',')
-    .filter(Boolean);
+    .filter(Boolean) as CountryCode[];
 }
 
 export default parseData;

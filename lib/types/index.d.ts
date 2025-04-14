@@ -27,14 +27,14 @@ type BaseTimezone = {
   r?: number;
 };
 
-type AliasTimezone = BaseTimezone & {
+export type AliasTimezone = BaseTimezone & {
   /**
    * Alias
    */
   a: string;
 };
 
-type CanonicalTimezone = BaseTimezone & {
+export type CanonicalTimezone = BaseTimezone & {
   /**
    * Utc offset
    */

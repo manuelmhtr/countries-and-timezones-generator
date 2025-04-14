@@ -1,36 +1,51 @@
 import type { Country, CountryCode, Timezone, TimezoneName } from "countries-and-timezones";
 
-export type CountriesAndTimezones = {
-  countries: Record<Country["id"], Country["name"]>;
-  timezones: Record<Timezone["name"], CompressedTimezone>;
+export type CountriesAndTimezonesData = {
+  countries: CountriesData;
+  timezones: TimezonesData;
 }
 
-export type CompressedTimezone = BaseTimezone & CanonicalTimezone & AliasTimezone & DeprecatedTimezone;
+export type CountriesData = Record<Country["id"], Country["name"]>;
+export type TimezonesData = Record<Timezone["name"], CompressedTimezone>;
+
+export type CompressedTimezone = CanonicalTimezone | AliasTimezone;
 
 type BaseTimezone = {
+  /**
+   * countries (country code)
+   */
   c?: string[];
+
+  /**
+   * deprecated
+   */
+  r?: number
 }
 
-type AliasTimezone = {
+type AliasTimezone = BaseTimezone & {
+  /**
+   * alias
+   */
   a: string;
 }
 
-type CanonicalTimezone = {
+type CanonicalTimezone = BaseTimezone & {
+  /**
+   * utc offset
+   */
   u: number;
-  d: number;
+
+  /**
+   * dst offset
+   */
+  d?: number;
 }
 
-type DeprecatedTimezone = {
-  r: number
-}
-
-export type FixedCompressedTimezone = CompressedTimezone & { countries: Country["name"][] };
-
-export type ExternalCountryCode = string;
+type ExcludedCountryCode = string;
 
 export type Fixes = {
   ADD_COUNTRIES: Partial<Record<TimezoneName, CountryCode>>;
-  REMOVE_COUNTRIES: ExternalCountryCode[];
+  REMOVE_COUNTRIES: ExcludedCountryCode[];
   DEPRECATED_TIMEZONES: TimezoneName[];
   OVERWRITE_TIMEZONE: Partial<Record<TimezoneName, CompressedTimezone>>;
 };

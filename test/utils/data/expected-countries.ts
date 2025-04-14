@@ -1,6 +1,6 @@
-import { CountriesAndTimezones } from "../../../lib/types";
+import type { CountriesData } from "../../../lib/types";
 
-const exported: CountriesAndTimezones["countries"] = {
+const exported: CountriesData = {
   AD: 'Andorra',
   AE: 'United Arab Emirates',
   AF: 'Afghanistan',

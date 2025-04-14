@@ -1,7 +1,7 @@
 import fs from 'node:fs';
-import { CountriesAndTimezones } from "../types";
+import { CountriesAndTimezonesData } from "../types";
 
-function storeData(filePath: string, data: CountriesAndTimezones): void {
+function storeData(filePath: string, data: CountriesAndTimezonesData): void {
   const content = JSON.stringify(data);
   return fs.writeFileSync(filePath, content);
 }

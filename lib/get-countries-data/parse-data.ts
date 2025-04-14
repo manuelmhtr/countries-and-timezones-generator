@@ -1,5 +1,5 @@
 import { type CheerioAPI, load } from 'cheerio';
-import type { CountriesAndTimezones } from "../types";
+import type { CountriesData } from "../types";
 import { Country, Timezone } from "countries-and-timezones";
 
 const TABLE_SELECTOR = 'table.wikitable.sortable';
@@ -26,7 +26,7 @@ const OVERWRITE_NAMES = {
 const getId = ($: CheerioAPI, tds: ReturnType<ReturnType<CheerioAPI>["find"]>): Country["id"] => $(tds.get(0)).text().trim() as Country["id"];
 const getName = ($: CheerioAPI, tds:ReturnType<ReturnType<CheerioAPI>["find"]>): Country["name"] => $(tds.get(1)).find('a').text();
 
-function parseData(html: string): CountriesAndTimezones["countries"] {
+function parseData(html: string): CountriesData {
   const $ = load(html);
   const countries: Partial<Record<Country["id"], Timezone["name"]>> = {};
 
@@ -49,7 +49,7 @@ function parseData(html: string): CountriesAndTimezones["countries"] {
   const sortedIds = Object.keys(countries).sort() as Country["id"][];
   return sortedIds.reduce((result, id) => {
     return Object.assign(result, {[id]: countries[id]});
-  }, {}) as CountriesAndTimezones["countries"];
+  }, {}) as CountriesData;
 }
 
 function parseName(id: Country["id"], input: string): Country["name"] {

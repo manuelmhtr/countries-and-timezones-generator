@@ -1,9 +1,9 @@
 import {difference, isInteger} from 'lodash-es';
 import type { Country, Timezone } from "countries-and-timezones";
-import { CompressedTimezone, CountriesAndTimezones } from "../types";
+import { AliasTimezone, CanonicalTimezone, CompressedTimezone, CountriesAndTimezonesData } from "../types";
 import { SetRequired } from "type-fest";
 
-const validateData = (data: CountriesAndTimezones): void => {
+const validateData = (data: CountriesAndTimezonesData): void => {
   checkAllCountriesHaveTimezones(data);
   checkUtcOffsets(data);
   checkAllAliasesExist(data);
@@ -12,11 +12,11 @@ const validateData = (data: CountriesAndTimezones): void => {
 
 const format = (data: object) => JSON.stringify(data, null, 2);
 
-const isAlias = (timezone: CompressedTimezone) => Boolean(timezone.a);
+const isAlias = (timezone: CompressedTimezone): timezone is AliasTimezone => "a" in timezone && Boolean(timezone.a);
 
-const isCanonical = (timezone: CompressedTimezone) => !isAlias(timezone) && Boolean(timezone.c);
+const isCanonical = (timezone: CompressedTimezone): timezone is CanonicalTimezone => !isAlias(timezone) && Boolean(timezone.c);
 
-const checkAllCountriesHaveTimezones = ({countries, timezones}: CountriesAndTimezones): void => {
+const checkAllCountriesHaveTimezones = ({countries, timezones}: CountriesAndTimezonesData): void => {
   const withTz = Object.values(timezones).reduce((previous, tz) => {
     for (const c of tz.c || []) {
       previous[c] = true;
@@ -32,10 +32,10 @@ const checkAllCountriesHaveTimezones = ({countries, timezones}: CountriesAndTime
     );
 };
 
-const checkUtcOffsets = ({timezones}: CountriesAndTimezones) => {
+const checkUtcOffsets = ({timezones}: CountriesAndTimezonesData) => {
   const errors = Object.keys(timezones)
     .filter((k) => isCanonical(timezones[k]))
-    .filter((k) => !isInteger(timezones[k].u));
+    .filter((k) => !isInteger((timezones[k] as CanonicalTimezone).u));
 
   if (errors.length > 0)
     throw new Error(
@@ -43,10 +43,10 @@ const checkUtcOffsets = ({timezones}: CountriesAndTimezones) => {
     );
 };
 
-const checkAllAliasesExist = ({timezones}: CountriesAndTimezones) => {
+const checkAllAliasesExist = ({timezones}: CountriesAndTimezonesData) => {
   const errors = Object.keys(timezones)
     .filter((k) => isAlias(timezones[k]))
-    .filter((k) => !timezones[timezones[k].a]);
+    .filter((k) => !timezones[(timezones[k] as AliasTimezone).a]);
 
   if (errors.length > 0)
     throw new Error(
@@ -54,7 +54,7 @@ const checkAllAliasesExist = ({timezones}: CountriesAndTimezones) => {
     );
 };
 
-const checkAllCountriesAreValid = ({countries, timezones}: CountriesAndTimezones): void => {
+const checkAllCountriesAreValid = ({countries, timezones}: CountriesAndTimezonesData): void => {
   const errors = (Object.keys(timezones) as Timezone["name"][])
     .reduce((previous, t) => [
       ...previous,

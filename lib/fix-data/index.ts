@@ -5,10 +5,10 @@ import {
   DEPRECATED_TIMEZONES,
   OVERWRITE_TIMEZONE,
 } from './fixes';
-import type { CountriesAndTimezones } from "../types";
-import type { Country, TimezoneName } from "countries-and-timezones";
+import type { CountriesAndTimezonesData, CountriesData, TimezonesData } from "../types";
+import type { TimezoneName } from "countries-and-timezones";
 
-const fixData = (data: CountriesAndTimezones): CountriesAndTimezones => {
+const fixData = (data: CountriesAndTimezonesData): CountriesAndTimezonesData => {
   return [
     addDeprecatedTimezones,
     overwriteTimezones,
@@ -17,11 +17,11 @@ const fixData = (data: CountriesAndTimezones): CountriesAndTimezones => {
   ].reduce((previous, function_) => function_(previous), data);
 };
 
-const overwriteTimezones = (data: CountriesAndTimezones): CountriesAndTimezones => {
+const overwriteTimezones = (data: CountriesAndTimezonesData): CountriesAndTimezonesData => {
   for (const key of Object.keys(OVERWRITE_TIMEZONE) as TimezoneName[]) {
     const current = data.timezones[key];
     const replacement = OVERWRITE_TIMEZONE[key];
-    data.timezones[key] = OVERWRITE_TIMEZONE[key];
+    data.timezones[key] = OVERWRITE_TIMEZONE[key]!;
     console.log(`\n\n${key}:`);
     console.log(JSON.stringify({current, replacement}, null, 2));
   }
@@ -29,10 +29,10 @@ const overwriteTimezones = (data: CountriesAndTimezones): CountriesAndTimezones 
   return data;
 };
 
-const addCountries = (data: CountriesAndTimezones): CountriesAndTimezones => {
+const addCountries = (data: CountriesAndTimezonesData): CountriesAndTimezonesData => {
   for (const key of Object.keys(ADD_COUNTRIES) as TimezoneName[]) {
     const tz = data.timezones[key];
-    const newCountries = ADD_COUNTRIES[key];
+    const newCountries = ADD_COUNTRIES[key]!;
     tz.c = uniq([...tz.c!, ...newCountries]);
     data.timezones[key] = tz;
   }
@@ -40,18 +40,18 @@ const addCountries = (data: CountriesAndTimezones): CountriesAndTimezones => {
   return data;
 };
 
-const removeCountries = (data: CountriesAndTimezones): CountriesAndTimezones => ({
+const removeCountries = (data: CountriesAndTimezonesData): CountriesAndTimezonesData => ({
   ...data,
-  countries: omit(data.countries, REMOVE_COUNTRIES) as CountriesAndTimezones["countries"],
+  countries: omit(data.countries, REMOVE_COUNTRIES) as CountriesData,
 });
 
-const addDeprecatedTimezones = (data: CountriesAndTimezones): CountriesAndTimezones => {
+const addDeprecatedTimezones = (data: CountriesAndTimezonesData): CountriesAndTimezonesData => {
   const timezones = (Object.keys(data.timezones) as TimezoneName[]).reduce((previous, tz) => {
     const timezone = data.timezones[tz];
     if (DEPRECATED_TIMEZONES.includes(tz)) timezone.r = 1;
     previous[tz] = timezone;
     return previous;
-  }, {} as CountriesAndTimezones["timezones"]);
+  }, {} as TimezonesData);
   return {...data, timezones};
 };
 

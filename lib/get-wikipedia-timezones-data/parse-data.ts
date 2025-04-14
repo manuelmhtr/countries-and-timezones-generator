@@ -1,6 +1,6 @@
 import { type CheerioAPI, load } from 'cheerio';
 import removeDuplicatedCountries from './remove-duplicated-countries';
-import type { CompressedTimezone, CountriesAndTimezones } from "../types";
+import type { CompressedTimezone, TimezonesData } from "../types";
 import type { Timezone } from "countries-and-timezones";
 
 const CANONICAL_TYPE = 'Canonical';
@@ -26,7 +26,7 @@ const getAliasOf = ($: CheerioAPI,  tds:ReturnType<ReturnType<CheerioAPI>["find"
 const getIsDeprecated = ($: CheerioAPI,  row:ReturnType<ReturnType<CheerioAPI>["find"]>) =>
   $(row).attr('style')!.includes(DEPRECATED_COLOR);
 
-function parseData(html: string): CountriesAndTimezones["timezones"] {
+function parseData(html: string): TimezonesData {
   const $ = load(html);
   const timezones: Partial<Record<Timezone["name"], CompressedTimezone>> = {};
 

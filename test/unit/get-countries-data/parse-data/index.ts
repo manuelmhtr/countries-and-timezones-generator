@@ -3,12 +3,12 @@ import path from 'node:path';
 import parseData from '../../../../lib/get-countries-data/parse-data';
 import { describe, beforeAll, it, expect} from "vitest";
 import { TestGlobal } from "../../../types";
-import { CountriesAndTimezones } from "../../../../lib/types";
+import { CountriesData } from "../../../../lib/types";
 import { Country } from "countries-and-timezones";
 
 describe('.getCountriesData | .parseData', () => {
   let { expectedCountries }= (global as TestGlobal).TestUtils.data;
-  let results = {} as CountriesAndTimezones["countries"];
+  let results = {} as CountriesData;
 
   beforeAll(() => {
     const dataPath = path.join(import.meta.dirname, './data.html');

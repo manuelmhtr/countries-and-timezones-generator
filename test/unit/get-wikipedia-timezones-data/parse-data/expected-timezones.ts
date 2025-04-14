@@ -1,6 +1,6 @@
-import { CountriesAndTimezones } from "../../../../lib/types";
+import type { TimezonesData } from "../../../../lib/types";
 
-const exported: CountriesAndTimezones["timezones"] = {
+const exported: TimezonesData = {
   'Africa/Abidjan': {
     u: 0,
     c: ['CI', 'BF', 'GH', 'GM', 'GN', 'IS', 'ML', 'MR', 'SH', 'SL', 'SN', 'TG'],

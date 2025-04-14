@@ -3,10 +3,10 @@ import path from 'node:path';
 import parseData from '../../../../lib/get-wikipedia-timezones-data/parse-data';
 import expectedTimezones from './expected-timezones';
 import { describe, beforeAll, it, expect} from "vitest";
-import { CountriesAndTimezones } from "../../../../lib/types";
+import { TimezonesData } from "../../../../lib/types";
 
 describe('.getTimezonesData | .parseData', () => {
-  let results = {}as CountriesAndTimezones["timezones"];
+  let results = {} as TimezonesData;
 
   beforeAll(() => {
     const dataPath = path.join(import.meta.dirname, './data.html');

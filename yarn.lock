@@ -588,7 +588,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:8, @types/eslint@npm:^8.44.6":
+"@types/eslint@npm:^8.44.6":
   version: 8.56.12
   resolution: "@types/eslint@npm:8.56.12"
   dependencies:
@@ -676,15 +676,6 @@ __metadata:
   version: 2.0.11
   resolution: "@types/unist@npm:2.0.11"
   checksum: 10c0/24dcdf25a168f453bb70298145eb043cfdbb82472db0bc0b56d6d51cd2e484b9ed8271d4ac93000a80da568f2402e9339723db262d0869e2bf13bc58e081768d
-  languageName: node
-  linkType: hard
-
-"@types/xo@npm:^0.39.9":
-  version: 0.39.9
-  resolution: "@types/xo@npm:0.39.9"
-  dependencies:
-    "@types/eslint": "npm:8"
-  checksum: 10c0/6427df6f1562bd11c8e20dbd5f81dcc17b50c33fd7fe5991a684de54f4daa83bf0a85fed28c0c5bdb57bf0cc964df33c96f2130365a45e3c960f8d3f1f3d69da
   languageName: node
   linkType: hard
 
@@ -1617,7 +1608,6 @@ __metadata:
   dependencies:
     "@types/lodash-es": "npm:^4.17.12"
     "@types/node": "npm:^22.14.1"
-    "@types/xo": "npm:^0.39.9"
     "@typescript-eslint/parser": "npm:^8.30.0"
     cheerio: "npm:^1.0.0"
     countries-and-timezones: "npm:^3.7.2"

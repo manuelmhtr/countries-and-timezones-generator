@@ -25,17 +25,15 @@
     "url": "https://github.com/manuelmhtr/countries-and-timezones-generator/issues"
   },
   "homepage": "https://github.com/manuelmhtr/countries-and-timezones-generator#readme",
-  "dependencies": {
-    "cheerio": "^1.0.0",
-    "lodash-es": "^4.17.21"
-  },
   "devDependencies": {
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^22.14.1",
     "@typescript-eslint/parser": "^8.30.0",
+    "cheerio": "^1.0.0",
     "countries-and-timezones": "^3.7.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
+    "lodash-es": "^4.17.21",
     "markdownlint-cli": "^0.44.0",
     "prettier": "^3.5.3",
     "tsx": "^4.19.3",

@@ -1,13 +1,15 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const parseData = require('../../../../lib/get-wikipedia-timezones-data/parse-data');
-const expectedTimezones = require('./expected-timezones');
+import fs from 'node:fs';
+import path from 'node:path';
+import {describe, beforeAll, it, expect} from 'vitest';
+import parseData from '../../../../lib/get-wikipedia-timezones-data/parse-data';
+import {type TimezonesData} from '../../../../lib/types';
+import expectedTimezones from './expected-timezones';
 
 describe('.getTimezonesData | .parseData', () => {
-  let results = {};
+  let results: Partial<TimezonesData> = {};
 
-  before(() => {
-    const dataPath = path.join(__dirname, './data.html');
+  beforeAll(() => {
+    const dataPath = path.join(import.meta.dirname, './data.html');
     const dataHtml = fs.readFileSync(dataPath, 'utf8');
     results = parseData(dataHtml);
   });

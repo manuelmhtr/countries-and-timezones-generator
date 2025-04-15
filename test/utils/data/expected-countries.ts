@@ -1,4 +1,6 @@
-module.exports = {
+import type {CountriesData} from '../../../lib/types';
+
+const exported: CountriesData = {
   AD: 'Andorra',
   AE: 'United Arab Emirates',
   AF: 'Afghanistan',
@@ -32,6 +34,7 @@ module.exports = {
   BR: 'Brazil',
   BS: 'Bahamas',
   BT: 'Bhutan',
+  // @ts-expect-error -- mismatched type, maybe outdated?
   BV: 'Bouvet Island',
   BW: 'Botswana',
   BY: 'Belarus',
@@ -249,3 +252,5 @@ module.exports = {
   ZM: 'Zambia',
   ZW: 'Zimbabwe',
 };
+
+export default exported;

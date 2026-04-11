@@ -11,145 +11,139 @@ const VALUES_SELECTOR = 'td';
 const DEPRECATED_COLOR = '#fdf5f5';
 
 const getId = (
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ) => $(tds.get(1)).find('a').text().trim();
 const getCountries = (
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ) => $(tds.get(0)).text().trim();
 const getType = (
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ) => $(tds.get(3)).text().trim();
 const getUtcOffset = (
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ) => offsetStringToMin($(tds.get(4)).find('a').text().trim());
 const getDstOffset = (
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ) => offsetStringToMin($(tds.get(5)).find('a').text().trim());
 const getAliasOf = (
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ) =>
-  $(tds.get(tds.length - 1))
-    .find('a')
-    .first()
-    .text()
-    .trim();
+	$(tds.get(tds.length - 1))
+		.find('a')
+		.first()
+		.text()
+		.trim();
 const getIsDeprecated = ($: CheerioAPI, row: Parameters<CheerioAPI>[0]) =>
-  $(row).attr('style')!.includes(DEPRECATED_COLOR);
+	$(row).attr('style').includes(DEPRECATED_COLOR);
 
 function parseData(html: string): TimezonesData {
-  const $ = load(html);
-  const timezones: Partial<Record<Timezone['name'], CompressedTimezone>> = {};
+	const $ = load(html);
+	const timezones: Partial<Record<Timezone['name'], CompressedTimezone>> = {};
 
-  $(TABLE_SELECTOR)
-    .first()
-    /* eslint-disable-next-line unicorn/no-array-callback-reference -- cheerio's `find` allows a string as a param */
-    .find(ROW_SELECTOR)
-    .each((index, row) => {
-      const tds = $(row).find(VALUES_SELECTOR);
-      if (tds.length === 0) {
-        return;
-      }
+	$(TABLE_SELECTOR)
+		.first()
+	/* eslint-disable-next-line unicorn/no-array-callback-reference -- cheerio's `find` allows a string as a param */
+		.find(ROW_SELECTOR)
+		.each((index, row) => {
+			const tds = $(row).find(VALUES_SELECTOR);
+			if (tds.length === 0) {
+				return;
+			}
 
-      const id = getId($, tds);
-      const timezone = getTimezone($, tds);
-      const deprecated = getIsDeprecated($, row);
+			const id = getId($, tds);
+			const timezone = getTimezone($, tds);
+			const deprecated = getIsDeprecated($, row);
 
-      if (deprecated) {
-        timezone!.r = 1;
-      }
+			if (deprecated) {
+				timezone.r = 1;
+			}
 
-      if (timezone) {
-        timezones[id] = timezone;
-      }
-    });
+			if (timezone) {
+				timezones[id] = timezone;
+			}
+		});
 
-  return sortObject(
-    removeDuplicatedCountries(
-      timezones as Record<Timezone['name'], CompressedTimezone>,
-    ),
-  );
+	return sortObject(removeDuplicatedCountries(timezones as Record<Timezone['name'], CompressedTimezone>));
 }
 
-function sortObject(
-  timezones: Record<Timezone['name'], CompressedTimezone>,
-): Record<Timezone['name'], CompressedTimezone> {
-  const sortedIds = Object.keys(timezones).sort();
-  return Object.fromEntries(sortedIds.map((id) => [id, timezones[id]]));
+function sortObject(timezones: Record<Timezone['name'], CompressedTimezone>): Record<Timezone['name'], CompressedTimezone> {
+	const sortedIds = Object.keys(timezones).toSorted();
+	return Object.fromEntries(sortedIds.map(id => [id, timezones[id]]));
 }
 
 function getTimezone(
-  $: CheerioAPI,
-  tds: ReturnType<ReturnType<CheerioAPI>['find']>,
+	$: CheerioAPI,
+	tds: ReturnType<ReturnType<CheerioAPI>['find']>,
 ): CompressedTimezone | undefined {
-  const type = parseType(getType($, tds));
-  const countries = parseCountries(getCountries($, tds));
+	const type = parseType(getType($, tds));
+	const countries = parseCountries(getCountries($, tds));
 
-  if (type === CANONICAL_TYPE) {
-    const utcOffset = getUtcOffset($, tds);
-    const dstOffset = getDstOffset($, tds);
-    const tz: Partial<CompressedTimezone> = {
-      u: utcOffset,
-    };
-    if (utcOffset !== dstOffset) {
-      tz.d = dstOffset;
-    }
+	if (type === CANONICAL_TYPE) {
+		const utcOffset = getUtcOffset($, tds);
+		const dstOffset = getDstOffset($, tds);
+		const tz: Partial<CompressedTimezone> = {
+			u: utcOffset,
+		};
+		if (utcOffset !== dstOffset) {
+			tz.d = dstOffset;
+		}
 
-    if (countries.length > 0) {
-      tz.c = countries;
-    }
+		if (countries.length > 0) {
+			tz.c = countries;
+		}
 
-    return tz as CompressedTimezone;
-  }
+		return tz as CompressedTimezone;
+	}
 
-  if (type === ALIAS_TYPE) {
-    const aliasOf = getAliasOf($, tds);
-    const tz: Partial<CompressedTimezone> = {a: aliasOf};
-    if (countries.length > 0) {
-      tz.c = countries;
-    }
+	if (type === ALIAS_TYPE) {
+		const aliasOf = getAliasOf($, tds);
+		const tz: Partial<CompressedTimezone> = {a: aliasOf};
+		if (countries.length > 0) {
+			tz.c = countries;
+		}
 
-    return tz as CompressedTimezone;
-  }
+		return tz as CompressedTimezone;
+	}
 }
 
 function offsetStringToMin(offsetString: string): number {
-  const [hoursStringRaw, minString] = offsetString.split(':');
-  const hoursString = hoursStringRaw
-    .replace('−0', '-')
-    .replace('−', '-')
-    .replace('+0', '')
-    .replace('+', '');
+	const [hoursStringRaw, minString] = offsetString.split(':');
+	const hoursString = hoursStringRaw
+		.replace('−0', '-')
+		.replace('−', '-')
+		.replace('+0', '')
+		.replace('+', '');
 
-  const hours = Number.parseInt(hoursString, 10);
-  const min = Number.parseInt(minString, 10);
-  const sign = hours > 0 ? 1 : -1;
+	const hours = Number.parseInt(hoursString, 10);
+	const min = Number.parseInt(minString, 10);
+	const sign = hours > 0 ? 1 : -1;
 
-  return hours * 60 + min * sign;
+	return (hours * 60) + (min * sign);
 }
 
 function parseType(input: string): undefined | string {
-  if (input.includes(CANONICAL_TYPE)) {
-    return CANONICAL_TYPE;
-  }
+	if (input.includes(CANONICAL_TYPE)) {
+		return CANONICAL_TYPE;
+	}
 
-  if (input.includes(ALIAS_TYPE)) {
-    return ALIAS_TYPE;
-  }
+	if (input.includes(ALIAS_TYPE)) {
+		return ALIAS_TYPE;
+	}
 
-  return undefined;
+	return undefined;
 }
 
 function parseCountries(input: string): CountryCode[] {
-  return (input || '')
-    .replaceAll(/[^A-Z,]/g, '')
-    .split(',')
-    .filter(Boolean) as CountryCode[];
+	return (input || '')
+		.replaceAll(/[^A-Z,]/g, '')
+		.split(',')
+		.filter(Boolean) as CountryCode[];
 }
 
 export default parseData;

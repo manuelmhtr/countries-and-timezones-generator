@@ -7,16 +7,16 @@ import {storeData} from './utils';
 const FILE_PATH = '/tmp/countries-and-timezones.json';
 
 async function generateFile(): Promise<void> {
-  const countries = await getCountriesData();
-  const timezones = await getWikipediaTimezonesData();
-  const data = fixData({countries, timezones});
-  validateData(data);
-  storeData(FILE_PATH, data);
+	const countries = await getCountriesData();
+	const timezones = await getWikipediaTimezonesData();
+	const data = fixData({countries, timezones});
+	validateData(data);
+	storeData(FILE_PATH, data);
 }
 
 try {
-  await generateFile();
-  console.log(`DONE. File: ${FILE_PATH}`);
+	await generateFile();
+	console.log(`DONE. File: ${FILE_PATH}`);
 } catch (error) {
-  console.log('ERROR', error);
+	console.log('ERROR', error);
 }

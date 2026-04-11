@@ -9,11 +9,11 @@ const dataPath = path.resolve(import.meta.dirname, './timezone-by-country.tab');
 const timezoneByCountry = fs.readFileSync(dataPath, 'utf8');
 
 const exported = {
-  expectedCountries,
-  expectedTimezones,
-  expectedTimezonesCountry,
-  moment,
-  timezoneByCountry,
+	expectedCountries,
+	expectedTimezones,
+	expectedTimezonesCountry,
+	moment,
+	timezoneByCountry,
 };
 
 export default exported;

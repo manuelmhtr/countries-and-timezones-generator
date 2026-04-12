@@ -36,7 +36,11 @@ const addCountries = (data: CountriesAndTimezonesData): CountriesAndTimezonesDat
 	for (const key of Object.keys(ADD_COUNTRIES) as TimezoneName[]) {
 		const tz = data.timezones[key];
 		const newCountries = ADD_COUNTRIES[key];
-		tz.c = uniq([...tz.c, ...newCountries]) as CountryCode[];
+		if (!newCountries) {
+			continue;
+		}
+
+		tz.c = uniq([...(tz.c ?? []), ...newCountries]) as CountryCode[];
 		data.timezones[key] = tz;
 	}
 

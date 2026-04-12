@@ -49,7 +49,7 @@ export type CanonicalTimezone = BaseTimezone & {
 type ExternalCountryCode = string;
 
 export type Fixes = {
-	ADD_COUNTRIES: Partial<Record<TimezoneName, CountryCode>>;
+	ADD_COUNTRIES: Partial<Record<TimezoneName, ExternalCountryCode[]>>;
 	REMOVE_COUNTRIES: ExternalCountryCode[];
 	DEPRECATED_TIMEZONES: TimezoneName[];
 	OVERWRITE_TIMEZONE: Partial<Record<TimezoneName, CompressedTimezone>>;
